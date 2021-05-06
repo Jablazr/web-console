@@ -150,3 +150,15 @@ function handle(command) {
 
 // initial stuff
 setOutput(CONSOLE_HOME_MSG);
+
+// debug
+let inputField = document.getElementById('testHere');
+let log = document.getElementById('log');
+
+inputField.oninput = handleInput;
+
+function handleInput(e) {
+    console.log("something happened");
+    console.log(e);
+    log.innerText = `${e.inputType} : ${e.data}`;
+}
