@@ -16,10 +16,17 @@ const CONSOLE_MAX_WIDTH = "20em";
 const CONSOLE_HOME_MSG = "Welcome to Web-Console v1.0\nBy jablazr on GitHub";
 
 
-// this div contains the entire console
 const consoleContainer = document.getElementById("js-console");
 
 const _console = document.createElement("div");
+
+const cmdPrompt = document.createElement("span");
+const inputElement = document.createElement("span");
+const outputElement = document.createElement("span");
+
+_console.addEventListener("click", () => {
+    inputElement.focus();
+});
 
 css(_console, {
     "border": "1px solid black",
@@ -37,34 +44,22 @@ css(_console, {
     "word-break": "break-word",
 });
 
-
-const cmdPrompt = document.createElement("span");
-const input = document.createElement("span");
-const outputElement = document.createElement("span");
-
-setAttributes(input, {
-    "contenteditable": true,
-    "onmouseup": "saveSelection();",
-    "onkeyup": "saveSelection();",
-    "onfocus": "restoreSelection();"
-});
-
-css(input, {
+css(inputElement, {
     "outline": "none",
 });
 
-_console.addEventListener("click", () => {
-    input.focus();
+setAttributes(inputElement, {
+    "contenteditable": true,
+    "onmouseup": "saveSelection();",
+    "onkeyup": "saveSelection();",
+    "onfocus": "restoreSelection();",
+    "oninput": "handleInputEvent(event);",
 });
 
 cmdPrompt.innerHTML = PROMPT_STRING;
 
-
 let lastData = null;
-input.oninput = inputEvent => {
-    console.log(inputEvent);
-    console.log("from oninput: " + inputEvent.target.innerText);
-
+function handleInputEvent(inputEvent) {
     // enter
     switch (inputEvent.inputType) {
         case "insertParagraph":
@@ -89,41 +84,41 @@ input.oninput = inputEvent => {
 
 _console.appendChild(outputElement);
 _console.appendChild(cmdPrompt);
-_console.appendChild(input);
+_console.appendChild(inputElement);
 
 consoleContainer.appendChild(_console);
 
 
 // fix cursor position when entering commands
 // https://stackoverflow.com/a/3323835/13329178
-let savedRange;
+let savedRange = null;
 function saveSelection() {
-    if (window.getSelection)//non IE Browsers
-    {
+    //non IE Browsers
+    if (window.getSelection) {
         savedRange = window.getSelection().getRangeAt(0);
     }
-    else if (document.selection)//IE
-    {
+    //IE 
+    else if (document.selection) {
         savedRange = document.selection.createRange();
     }
 }
 
 function restoreSelection() {
-    input.focus();
-    if (savedRange != null) {
-        if (window.getSelection)//non IE and there is already a selection
-        {
+    inputElement.focus();
+    if (savedRange) {
+        //non IE and there is already a selection
+        if (window.getSelection) {
             let s = window.getSelection();
             if (s.rangeCount > 0)
                 s.removeAllRanges();
             s.addRange(savedRange);
         }
-        else if (document.createRange)//non IE and no selection
-        {
+        //non IE and no selection
+        else if (document.createRange) {
             window.getSelection().addRange(savedRange);
         }
-        else if (document.selection)//IE
-        {
+        //IE
+        else if (document.selection) {
             savedRange.select();
         }
     }
@@ -166,7 +161,5 @@ function handle(command) {
     }
 }
 
-// initial stuff
+// initialisation
 setOutput(CONSOLE_HOME_MSG);
-
-// debug
