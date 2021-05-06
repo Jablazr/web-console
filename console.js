@@ -11,6 +11,8 @@ function css(element, styles) {
 
 // console settings
 const PROMPT_STRING = "~$&emsp;";
+const CONSOLE_HEIGHT = "20em";
+const CONSOLE_MAX_WIDTH = "20em";
 
 
 // this div contains the entire console
@@ -20,10 +22,18 @@ const _console = document.createElement("div");
 
 css(_console, {
     "border": "1px solid black",
-    "padding": "10px",
+    "padding": "1em",
+    "margin": "auto",
     "font-family": "monospace",
-    "font-size": "20px",
-    "font-style": "normal"
+    "font-style": "normal",
+
+    "font-size": "1.5em",
+    "max-width": CONSOLE_MAX_WIDTH,
+    "line-height": "normal",
+    "height": CONSOLE_HEIGHT,
+
+    "overflow-y": "auto",
+    "word-break": "break-word",
 });
 
 
@@ -31,23 +41,14 @@ const cmdPrompt = document.createElement("span");
 const input = document.createElement("span");
 const outputElement = document.createElement("span");
 
-setAttributes(cmdPrompt, {
-    "id": "prompt",
-});
-
 setAttributes(input, {
-    "id": "input",
     "contenteditable": true,
     "onmouseup": "saveSelection();",
     "onkeyup": "saveSelection();",
     "onfocus": "restoreSelection();"
 });
 
-setAttributes(outputElement, {
-    "id": "output",
-});
-
-cmdPrompt.addEventListener("click", () => {
+_console.addEventListener("click", () => {
     input.focus();
 });
 
@@ -55,7 +56,7 @@ cmdPrompt.innerHTML = PROMPT_STRING;
 
 // console input
 input.addEventListener("keypress", event => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === "Enter") {
         // don't actually add a space
         event.preventDefault();
 
@@ -87,7 +88,7 @@ function saveSelection() {
 }
 
 function restoreSelection() {
-    document.getElementById("input").focus();
+    input.focus();
     if (savedRange != null) {
         if (window.getSelection)//non IE and there is already a selection
         {
