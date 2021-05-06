@@ -79,6 +79,9 @@ function handleInputEvent(inputEvent) {
             }
     }
     lastData = inputEvent.data;
+
+    // scroll to the bottom
+    _console.scrollTop = _console.scrollHeight;
 };
 
 
