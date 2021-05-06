@@ -85,6 +85,7 @@ function saveSelection() {
     if (window.getSelection)//non IE Browsers
     {
         savedRange = window.getSelection().getRangeAt(0);
+        appendOutput(savedRange);
     }
     else if (document.selection)//IE
     {
