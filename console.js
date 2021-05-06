@@ -59,17 +59,33 @@ _console.addEventListener("click", () => {
 
 cmdPrompt.innerHTML = PROMPT_STRING;
 
-// console input
-input.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        // don't actually add a space
-        event.preventDefault();
 
-        handle(input.innerText);
+let lastData = null;
+input.oninput = inputEvent => {
+    console.log(inputEvent);
+    console.log("from oninput: " + inputEvent.target.innerText);
 
-        input.innerText = "";
+    // enter
+    switch (inputEvent.inputType) {
+        case "insertParagraph":
+            handle(inputEvent.target.innerText);
+            inputEvent.target.innerText = "";
+            break;
+        case "insertCompositionText": // chrome on android
+            if (lastData === inputEvent.data) {
+                handle(inputEvent.target.innerText);
+                inputEvent.target.innerText = "";
+            }
+            break;
+        case "insertText": // empty text insertion (insert a new line)
+            if (!inputEvent.data) {
+                handle(inputEvent.target.innerText);
+                inputEvent.target.innerText = "";
+            }
     }
-});
+    lastData = inputEvent.data;
+};
+
 
 _console.appendChild(outputElement);
 _console.appendChild(cmdPrompt);
@@ -85,7 +101,6 @@ function saveSelection() {
     if (window.getSelection)//non IE Browsers
     {
         savedRange = window.getSelection().getRangeAt(0);
-        appendOutput(savedRange);
     }
     else if (document.selection)//IE
     {
@@ -129,8 +144,11 @@ function clearOutput() {
 
 // handle commands
 function handle(command) {
+    // remove all newlines
+    command = command.replace(/(\r\n|\n|\r)/gm, "");
+
     // show the last command
-    appendOutput(cmdPrompt.innerText + input.innerText);
+    appendOutput(cmdPrompt.innerText + command);
 
     switch (command) {
         case "":
@@ -144,7 +162,7 @@ function handle(command) {
             clearOutput();
             break;
         default:
-            appendOutput(`${input.innerText}: command not found`);
+            appendOutput(`${command}: command not found`);
     }
 }
 
@@ -152,13 +170,3 @@ function handle(command) {
 setOutput(CONSOLE_HOME_MSG);
 
 // debug
-let inputField = document.getElementById('testHere');
-let log = document.getElementById('log');
-
-inputField.oninput = handleInput;
-
-function handleInput(e) {
-    console.log("something happened");
-    console.log(e);
-    log.innerText = `${e.inputType} : ${e.data}`;
-}
