@@ -60,7 +60,7 @@ _console.addEventListener("click", () => {
 cmdPrompt.innerHTML = PROMPT_STRING;
 
 // console input
-input.addEventListener("keypress", event => {
+input.addEventListener("keyup", event => {
     if (event.key === "Enter" || event.which === 13) {
         //don't actually create a new line;
         event.preventDefault();
