@@ -10,9 +10,10 @@ function css(element, styles) {
 }
 
 // console settings
-const PROMPT_STRING = "~$&emsp;";
+const PROMPT_STRING = "~$&emsp;"; //HTML formatting
 const CONSOLE_HEIGHT = "20em";
 const CONSOLE_MAX_WIDTH = "20em";
+const CONSOLE_HOME_MSG = "Welcome to Web-Console v1.0\nBy jablazr on GitHub";
 
 
 // this div contains the entire console
@@ -117,6 +118,10 @@ function appendOutput(output) {
     outputElement.innerText += output + "\n";
 }
 
+function clearOutput() {
+    outputElement.innerText = "";
+}
+
 // handle commands
 function handle(command) {
     // show the last command
@@ -129,7 +134,14 @@ function handle(command) {
         case "ping!":
             appendOutput("pong!");
             break;
+        case "clear":
+        case "clr":
+            clearOutput();
+            break;
         default:
             appendOutput(`${input.innerText}: command not found`);
     }
 }
+
+// initial stuff
+setOutput(CONSOLE_HOME_MSG);
