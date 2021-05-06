@@ -61,7 +61,10 @@ cmdPrompt.innerHTML = PROMPT_STRING;
 
 // console input
 input.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.code === "Enter") {
+    appendOutput(event.key);
+    appendOutput(event.keyCode);
+    appendOutput(event.which);
+    if (event.key === "Enter" || event.code === "Enter" || event.which === 13 || event.keyCode === 13) {
         // don't actually create a new line
         event.preventDefault();
 
