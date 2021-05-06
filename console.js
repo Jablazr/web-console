@@ -49,6 +49,10 @@ setAttributes(input, {
     "onfocus": "restoreSelection();"
 });
 
+css(input, {
+    "outline": "none",
+});
+
 _console.addEventListener("click", () => {
     input.focus();
 });
