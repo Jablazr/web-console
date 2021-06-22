@@ -8,6 +8,12 @@
     </head>
     <body>
         <div id="js-console"></div>
-        <script src="./console.js"></script>
+
+        <script type="module">
+            import { Console, OutputPiece } from "./console.mjs";
+            const _console = new Console();
+            console.log(_console);
+            _console.appendOutput([new OutputPiece(":^)", "brown")]);
+        </script>
     </body>
 </html>
