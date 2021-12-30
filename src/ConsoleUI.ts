@@ -52,7 +52,9 @@ export class ConsoleUI {
 
     // set focus on the input element when the console is clicked
     this.consoleContainer.addEventListener("click", () => {
-      this.input.focus();
+      this.input.focus({
+        preventScroll: true,
+      });
     });
 
     this.webConsole = new WebConsole(maxLines);
