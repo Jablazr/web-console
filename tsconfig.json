@@ -11,7 +11,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noEmit": true,
-    "importsNotUsedAsValues": "remove"
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": false,
+    "isolatedModules": false
   },
   "include": ["./src", "src/**/*.svelte"]
 }
