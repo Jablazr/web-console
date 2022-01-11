@@ -1,13 +1,7 @@
-import { ConsoleUI } from "./ConsoleUI";
+import Console from "./Console.svelte";
 
-const webConsoleEl = document.getElementById("webConsole")!;
-const webConsole = new ConsoleUI(webConsoleEl, 50);
-
-webConsole.append({
-  parts: [
-    {
-      text: ":^)",
-      color: "brown",
-    },
-  ],
+const console = new Console({
+  target: document.getElementById("webConsole")!,
 });
+
+export default console;
